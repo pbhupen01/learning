@@ -1,4 +1,4 @@
-package java.eight.lambda;
+package javaLang.eight.lambda;
 
 /**
  * Adding default methods in interfaces makes lets developer modify interface without breaking existing code.
@@ -12,6 +12,8 @@ public class DefaultMethodInInterfaceExample {
         // Default method in interface.
         // Class implementing this interface may override this method or use this default implementation.
         default double sqrt(int a) {
+
+            calculate(a);
             return Math.sqrt(a);
         }
     }
