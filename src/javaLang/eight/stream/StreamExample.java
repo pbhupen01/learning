@@ -1,5 +1,7 @@
 package javaLang.eight.stream;
 
+import javaLang.eight.stream.model.Employee;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

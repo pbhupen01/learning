@@ -1,5 +1,7 @@
 package javaLang.eight.stream;
 
+import javaLang.eight.stream.model.Employee;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;

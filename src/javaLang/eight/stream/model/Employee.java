@@ -1,4 +1,4 @@
-package javaLang.eight.stream;
+package javaLang.eight.stream.model;
 
 public class Employee {
 
@@ -40,6 +40,11 @@ public class Employee {
     public void printEmployee()
     {
         System.out.println(String.format("Employee name: %s Age: %d Salary: %d",name, age, salary));
+    }
+
+    public String toString()
+    {
+        return String.format("Employee name: %s Age: %d Salary: %d",name, age, salary);
     }
 
 }
