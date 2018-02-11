@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -47,6 +48,8 @@ public class StreamExample {
 
     public static void main(String arge[]) throws Exception
     {
+        List<Employee> employees = createEmployeeList();
+        updateListUsingStream(employees);
         streamSimpleExample();
         waysOfCreatingStream();
         streamProcessingOrderVertical();
@@ -63,6 +66,12 @@ public class StreamExample {
         employees.add(new Employee("Ram", 37, 220000));
 
         return employees;
+    }
+
+    private static void updateListUsingStream(List<Employee> employees)
+    {
+        AtomicInteger id = new AtomicInteger(10);
+        employees.stream().peek(e-> e.setId(id.incrementAndGet())).forEach(System.out::println);
     }
 
     private static void streamSimpleExample()

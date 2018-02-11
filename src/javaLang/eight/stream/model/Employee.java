@@ -5,6 +5,7 @@ public class Employee {
     private String name;
     private int age;
     private int salary;
+    private int id;
 
     public Employee(String name, int age, int salary)
     {
@@ -39,12 +40,20 @@ public class Employee {
 
     public void printEmployee()
     {
-        System.out.println(String.format("Employee name: %s Age: %d Salary: %d",name, age, salary));
+        System.out.println(this);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String toString()
     {
-        return String.format("Employee name: %s Age: %d Salary: %d",name, age, salary);
+        return String.format("Employee Id: %d Name: %s Age: %d Salary: %d",id, name, age, salary);
     }
 
 }

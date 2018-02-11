@@ -33,6 +33,7 @@ public class StreamCollectTerminalOperation {
         groupByAveragingExample(employees);
         groupBySummingExample(employees);
         groupByMaxExample(employees);
+        summingUsingCollector(employees);
     }
 
     private static List<Employee> createEmployees()
@@ -95,9 +96,10 @@ public class StreamCollectTerminalOperation {
 
     }
 
-    private static void aggregationUsingCollector()
+    private static void summingUsingCollector(List<Employee> employees)
     {
-
+        Double d = employees.stream().collect(Collectors.summingDouble(e->e.getSalary()));
+        System.out.println(d);
     }
 
     private static void joiningCollector()
