@@ -2,16 +2,14 @@ package javaLang.eight.lambda;
 
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class BuiltInFunctionalInterfaceExample {
 
     public static void main(String args[])
     {
         builtInFunctionalInterfacePredicate();
+        builtInFunctionalInterfaceBiFunction();
         builtInFunctionalInterfaceFunction();
         builtInFunctionalInterfaceSupplier();
         builtInFunctionalInterfaceConsumer();
@@ -53,6 +51,24 @@ public class BuiltInFunctionalInterfaceExample {
     {
         Function<String, Integer> toInteger = Integer::valueOf;
         Function<String, String> backToString = toInteger.andThen(String::valueOf);
+    }
+
+    /**
+     * It represents a function which takes two parameters and return on result
+     */
+    private static void builtInFunctionalInterfaceBiFunction()
+    {
+        BiFunction<String, String,String> concat = (x, y) ->  x + y;
+        BiFunction<Integer, Integer, Integer> add = (x,y) -> x + y;
+        BiFunction<Integer, Integer, Boolean> compare = (x,y) -> x > y;
+    }
+
+    /**
+     * It is a type of BiFunction which takes two parameters of same type and return result of same type.
+     */
+    private static void builtInFunctionalInterfaceBinaryOperator()
+    {
+        BinaryOperator<Integer> add = (x, y) -> x + y;
     }
 
 

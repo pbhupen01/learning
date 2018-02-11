@@ -98,6 +98,10 @@ public class BasicLambdaExpressionExample {
 
         /**
          * Second way of using lambda by passing it to another method.
+         *
+         * You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method.
+         * In those cases, it's often clearer to refer to the existing method by name.
+         * Method references enable you to do this; they are compact, easy-to-read lambda expressions for methods that already have a name.
          */
         Arrays.stream(new String[]{"111,222,444"}).forEach(String::valueOf);
         //Arrays.stream(new String[]{"111,222,444"}).forEach(intToStringConverter2);
