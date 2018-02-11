@@ -1,5 +1,13 @@
 package javaLang.eight.stream;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -35,22 +43,83 @@ import java.util.stream.Stream;
  */
 public class StreamExample {
 
-    public static void main(String arge[])
+    public static void main(String arge[]) throws Exception
     {
+        streamSimpleExample();
+        waysOfCreatingStream();
+        streamProcessingOrderVertical();
+        streamSupplierExample();
+        streamForeachOrderedExample();
+    }
 
-        Stream.of("one", "two", "three", "four")
-                .filter(e -> e.length() > 3)
-                .peek(e -> System.out.println("Filtered value: " + e))
-                .map(String::toUpperCase)
-                .peek(e -> System.out.println("Mapped value: " + e))
-                .forEach(System.out::println);
+    private static List<Employee> createEmployeeList()
+    {
+        List<Employee> employees = new ArrayList<Employee>();
+        employees.add(new Employee("Ravi", 32, 200000));
+        employees.add(new Employee("Mandar", 42, 150000));
+        employees.add(new Employee("Agam", 35, 100000));
+        employees.add(new Employee("Ram", 37, 220000));
 
+        return employees;
+    }
+
+    private static void streamSimpleExample()
+    {
+        System.out.println("\nSimple stream with filter");
         Stream.of("d2", "a2", "b1", "b3", "c")
-                .filter(s -> {
-                    System.out.println("filter: " + s);
-                    return true;
-                });
+                .filter(s -> s.startsWith("b"))
+                .forEach(s -> System.out.print(s));
+    }
 
+    private static void waysOfCreatingStream() throws IOException {
+        /**
+         * Creating from array
+         */
+        System.out.println("\nCreated using Arrays.stream(array)");
+        int array[] = new int[]{1,2,3,6};
+        Arrays.stream(array).forEach(System.out::print);
+
+        /**
+         * Using Stream.of
+         */
+        System.out.println("\nCreated using Stream.of(varargs)");
+        Stream.of("d2", "a2", "b1", "b3", "c")
+                .filter(s -> s.startsWith("b"))
+                .forEach(s -> System.out.print(s));
+
+        /**
+         * Using IntStream.range
+         */
+
+        System.out.println("\nCreated using IntStream.range()");
+        IntStream.range(0,10).forEach(System.out::print);
+
+
+        /**
+         * From collection
+         */
+        System.out.println("\nCreated using Collection.stream(collection)");
+        List<Employee> employees = createEmployeeList();
+        employees.stream().forEach(e -> System.out.println(e.getName()));
+
+        /**
+         * From Files.lines
+         */
+        System.out.println("\nCreated using Files.lines");
+        String fileName = "resources/stream_input.txt";
+        Files.lines(Paths.get(fileName)).forEach(System.out::println);
+
+        /**
+         * From BufferredReader.lines
+         */
+        System.out.println("\nCreated using BufferredReader.lines");
+        Files.newBufferedReader(Paths.get(fileName)).lines().forEach(System.out::println);
+
+    }
+
+    private static void streamProcessingOrderVertical()
+    {
+        System.out.println("\nOutput to demonstrate stream vertical processing");
         Stream.of("d2", "a2", "b1", "b3", "c")
                 .filter(s -> {
                     System.out.println("filter: " + s);
@@ -64,39 +133,45 @@ public class StreamExample {
                     return s.toUpperCase();
                 })
                 .anyMatch(s -> {
-                    System.out.println("anyMatch: " + s);
+                    //System.out.println("anyMatch: " + s);
                     return s.startsWith("A");
                 });
     }
 
-    private static void streamSimpleExample()
-    {
 
-    }
-
-    private static void waysOfCreatingStream()
-    {
-
-    }
-
-    private static void streamProcessingOrderVertical()
-    {
-
-    }
-
-
+    /**
+     * Create a new stream chain for every terminal operation we want to execute,
+     * e.g. we could create a stream supplier to construct a new stream with all intermediate operations already set up
+     */
     private static void streamSupplierExample()
     {
+        System.out.println("\nStream supplier example");
+        Supplier<Stream<String>> streamSupplier =
+                () -> Stream.of("d2", "a2", "b1", "b3", "c")
+                        .filter(s -> s.startsWith("a"));
+
+        System.out.println(streamSupplier.get().anyMatch(s -> true));   // ok
+        System.out.println(streamSupplier.get().noneMatch(s -> true));  // ok
 
     }
 
-    private static void streamForeachExample()
-    {
-
-    }
-
+    /**
+     * The behavior of foreach operation is explicitly nondeterministic.
+     * For parallel stream pipelines, this operation does not guarantee to respect the encounter order of the stream, as doing so would sacrifice the benefit of parallelism.
+     *
+     * But foreachOrdered will always guarantee to produce output in the same order as in the stream.
+     */
     private static void streamForeachOrderedExample(){
+        System.out.println("\nStream foreachOrdered example");
+        /**
+         * May not always produce result in the order given in the stream
+         */
+        Stream.of("AAA","BBB","CCC").parallel().forEach(s->System.out.println("Output:"+s));
+
+        /**
+         * Will always produce result in the order given in the stream
+         */
+        Stream.of("AAA","BBB","CCC").parallel().forEachOrdered(s->System.out.println("Output:"+s));
 
     }
-
 }

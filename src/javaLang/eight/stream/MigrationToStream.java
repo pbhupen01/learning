@@ -8,50 +8,6 @@ import java.util.function.Predicate;
 
 public class MigrationToStream {
 
-    static public class Employee {
-
-        private String name;
-        private int age;
-        private int salary;
-
-        public Employee(String name, int age, int salary)
-        {
-            this.name = name;
-            this.age = age;
-            this.salary = salary;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getSalary() {
-            return salary;
-        }
-
-        public void setSalary(int salary) {
-            this.salary = salary;
-        }
-
-        public void printEmployee()
-        {
-            System.out.println(String.format("Employee name: %s Age: %d Salary: %d",name, age, salary));
-        }
-
-    }
-
     static interface CheckEmployee
     {
         boolean check(Employee employee);
@@ -62,7 +18,7 @@ public class MigrationToStream {
 
         @Override
         public boolean check(Employee employee) {
-            return employee.name.startsWith("R");
+            return employee.getName().startsWith("R");
         }
     }
 
@@ -87,7 +43,7 @@ public class MigrationToStream {
         empFilterWithCondition(employees, new CheckEmployee() {
             @Override
             public boolean check(Employee employee) {
-                return employee.salary > 200000;
+                return employee.getSalary() > 200000;
             }
         });
 
@@ -100,19 +56,19 @@ public class MigrationToStream {
          * parameter is employee. Which is the parameter of check method in CheckEmployee interface
          * return time is boolean which is return type of check method in CheckEmployee interface
          */
-        empFilterWithCondition(employees, e -> e.salary > 150000 && e.age < 34);
+        empFilterWithCondition(employees, e -> e.getSalary() > 150000 && e.getAge() < 34);
 
         System.out.println("\nempFilterWithPredicate using lambda");
-        empFilterWithPredicate(employees, e -> e.age < 33);
+        empFilterWithPredicate(employees, e -> e.getAge() < 33);
 
         System.out.println("\nempFilterWithPredicateAndDefinedAction using lambda with defined action");
-        empFilterWithPredicateAndDefinedAction(employees, e -> e.age > 32, e -> System.out.println(e.getName()));
+        empFilterWithPredicateAndDefinedAction(employees, e -> e.getAge() > 32, e -> System.out.println(e.getName()));
 
         System.out.println("\nempFilterWithPredicateMapperAndDefinedAction using lambda with mapper and defined action");
-        empFilterWithPredicateMapperAndDefinedAction(employees, e-> e.age > 34, e -> e.name, System.out::println);
+        empFilterWithPredicateMapperAndDefinedAction(employees, e-> e.getAge() > 34, e -> e.getName(), System.out::println);
 
         System.out.println("\nprocessElements using lambda with mapper and defined action");
-        processElements(employees, e-> e.name.startsWith("R"), e-> e.age, a -> System.out.println("Age: " + a));
+        processElements(employees, e-> e.getName().startsWith("R"), e-> e.getAge(), a -> System.out.println("Age: " + a));
 
         /**
          * procesElements method performs following actions:
@@ -126,7 +82,7 @@ public class MigrationToStream {
          */
         System.out.println("\nUsing Stream aggregate functions");
         employees.stream()
-                .filter(e -> e.salary > 110000)
+                .filter(e -> e.getSalary() > 110000)
                 .map(e -> e.getName())
                 .forEach(n -> System.out.println("Name: " + n));
     }
@@ -154,7 +110,7 @@ public class MigrationToStream {
     {
         for(Employee employee: employees)
         {
-            if(employee.age > age)
+            if(employee.getAge() > age)
             {
                 employee.printEmployee();
             }
@@ -173,7 +129,7 @@ public class MigrationToStream {
     {
         for(Employee employee: employees)
         {
-            if(employee.age > low && employee.age < high)
+            if(employee.getAge() > low && employee.getAge() < high)
             {
                 employee.printEmployee();
             }
